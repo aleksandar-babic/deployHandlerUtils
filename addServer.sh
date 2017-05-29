@@ -1,10 +1,15 @@
 #!/usr/bin/env bash
 
+if [ "$#" -ne 4 ]; then
+    echo "Usage: ./addServer username password appName port"
+    exit
+fi
+
 #CONFIG
 user=$1
 password=$2
 appName=$3
-url=$3.deployhandler.com
+url=$3.example.com
 port=$4
 
 #Create user
