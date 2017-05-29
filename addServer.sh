@@ -7,7 +7,7 @@ appName=$3
 url=$3.deployhandler.com
 port=$4
 
-Create user
+#Create user
 useradd -m $user
 echo -e "$password\n$password\n" | sudo passwd $user
 if [ "$?" -eq "0" ]
