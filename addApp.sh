@@ -9,7 +9,7 @@ fi
 user=$1
 password=$2
 appName=$3
-url=$3.example.com
+url=$3.deployhandler.com
 port=$4
 
 #Create user if does not exist
@@ -40,7 +40,8 @@ then
 	systemctl restart nginx
 else 
 	exit $?
-fi					
+fi			
+
 
 #Cloudflare API add DNS domain
 curl -X POST "https://api.cloudflare.com/client/v4/zones/YOUR_ZONE_ID/dns_records" \

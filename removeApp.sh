@@ -8,7 +8,10 @@ fi
 #CONFIG
 user=$1
 appName=$2
-url=$2.example.com
+url=$2.deployhandler.com
+
+#Remove from pm2
+pm2 delete $appName
 
 #Delete app files
 rm -rf /home/$1/$2
