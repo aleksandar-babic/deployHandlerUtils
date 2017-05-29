@@ -1,24 +1,17 @@
 #!/usr/bin/env bash
 
 if [ "$#" -ne 2 ]; then
-    echo "Usage: ./removeServer.sh username appName"
+    echo "Usage: ./removeApp.sh username appName"
     exit
 fi
 
 #CONFIG
 user=$1
 appName=$2
-url=$2.deployhandler.com
+url=$2.example.com
 
-#Delete user
-deluser $user
-rm -rf /home/$user
-if [ "$?" -eq "0" ]
-then
-	echo User $1 deleted
-else 
-	exit $? 	
-fi
+#Delete app files
+rm -rf /home/$1/$2
 
 #Remove NGINX vhost
 rm /etc/nginx/sites-available/$url /etc/nginx/sites-enabled/$url
