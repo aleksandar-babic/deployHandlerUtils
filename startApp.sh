@@ -32,7 +32,8 @@ if [ $res -eq 2 ]; then
 	if [ "$#" -eq 4 ]; then
 		cd /home/$user/$appName
 		pm2 start --name "$appName" "/usr/bin/npm" -- $npm
-		if [ "$?" -eq "0" ]; then
+		check=$(ps aux | grep -e "$appName" | grep -v grep | awk '{print $2}' | wc -w )
+		if [ "$check" -eq "3" ]; then
 			echo "Started by npm"
 			exit $?
 		fi
