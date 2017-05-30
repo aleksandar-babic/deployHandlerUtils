@@ -24,7 +24,7 @@ if [ $res -eq 2 ]; then
 		pm2 start --name "$appName" /home/$user/$appName/$entryPoint
 		if [ "$?" -eq "0" ]; then
 			echo "Started by entry point"
-			exit $?
+			exit 0
 		fi
 	fi
 
@@ -35,7 +35,7 @@ if [ $res -eq 2 ]; then
 		check=$(ps aux | grep -e "$appName" | grep -v grep | awk '{print $2}' | wc -w )
 		if [ "$check" -eq "3" ]; then
 			echo "Started by npm"
-			exit $?
+			exit 0
 		fi
 	fi
 
@@ -43,7 +43,7 @@ if [ $res -eq 2 ]; then
 	pm2 start --name "$appName" /home/$user/$appName/server.js
 	if [ "$?" -eq "0" ]; then
 		echo "Started by server.js"
-		exit $?
+		exit 0
 	fi
 
 	#If everything above failed
