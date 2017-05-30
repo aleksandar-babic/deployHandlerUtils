@@ -8,8 +8,9 @@ fi
 #CONFIG
 appName=$1
 
-res=$(ps aux | grep -e "$appName" | grep -v grep | awk '{print $2}' | wc -w )
-if [ $res -eq 3 ]; then
+res=$(pm2 list | grep $appName | awk '{print $8}')
+re='^[0-9]+$'
+if [[ $res =~ $re ]] && [[ $res -ne 0 ]] ; then
 	pm2 stop $appName
 	if [ $? -eq 0 ]; then
 		echo "App '$appName' stopped."

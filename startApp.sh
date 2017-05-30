@@ -17,8 +17,11 @@ appName=$2
 entryPoint=$3
 npm=$4
 
-res=$(ps aux | grep -e "$appName" | grep -v grep | awk '{print $2}' | wc -w )
-if [ $res -eq 2 ]; then
+res=$(pm2 list | grep $appName | awk '{print $8}')
+echo $res
+re='^[0-9]+$'
+if [[ $res -eq 0 ]]; then
+
 	#Try to start with entry point provided
 	if [ "$#" -eq 3 ]; then
 		pm2 start --name "$appName" /home/$user/$appName/$entryPoint
@@ -32,24 +35,17 @@ if [ $res -eq 2 ]; then
 	if [ "$#" -eq 4 ]; then
 		cd /home/$user/$appName
 		pm2 start --name "$appName" "/usr/bin/npm" -- $npm
+		sleep 10
 		check=$(ps aux | grep -e "$appName" | grep -v grep | awk '{print $2}' | wc -w )
-		if [ "$check" -eq "3" ]; then
+		echo "Result after eq 4 command : $check"
+		if [ "$check" -eq "2" ]; then
 			echo "Started by npm"
 			exit 0
 		else 
-			pm2 delete $appName	
+			pm2 delete $appName
+			echo "Error while starting by provided npm command $npm"
+			exit 1	
 		fi
-	fi
-
-	#Try to start using npm start
-	cd /home/$user/$appName
-	pm2 start --name "$appName" "/usr/bin/npm" -- start
-	check=$(ps aux | grep -e "$appName" | grep -v grep | awk '{print $2}' | wc -w )
-	if [ "$check" -eq "3" ]; then
-		echo "Started by npm start"
-		exit 0
-	else 
-		pm2 delete $appName	
 	fi
 
 	#Try to start with server.js
@@ -62,11 +58,11 @@ if [ $res -eq 2 ]; then
 	#If everything above failed
 	echo "START FAILED"
 	exit 1
+
 else
 	echo "App $appName already started."
 	exit 0	
 fi
-
 
 
 
