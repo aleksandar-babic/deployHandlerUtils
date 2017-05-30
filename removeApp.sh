@@ -14,7 +14,7 @@ url=$2.deployhandler.com
 pm2 delete $appName
 
 #Delete app files
-rm -rf /home/$1/$2
+rm -rf /home/$user/$appName
 
 #Remove NGINX vhost
 rm /etc/nginx/sites-available/$url /etc/nginx/sites-enabled/$url
