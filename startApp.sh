@@ -36,7 +36,20 @@ if [ $res -eq 2 ]; then
 		if [ "$check" -eq "3" ]; then
 			echo "Started by npm"
 			exit 0
+		else 
+			pm2 delete $appName	
 		fi
+	fi
+
+	#Try to start using npm start
+	cd /home/$user/$appName
+	pm2 start --name "$appName" "/usr/bin/npm" -- start
+	check=$(ps aux | grep -e "$appName" | grep -v grep | awk '{print $2}' | wc -w )
+	if [ "$check" -eq "3" ]; then
+		echo "Started by npm start"
+		exit 0
+	else 
+		pm2 delete $appName	
 	fi
 
 	#Try to start with server.js
