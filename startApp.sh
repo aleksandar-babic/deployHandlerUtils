@@ -61,7 +61,7 @@ if [[ $res -eq 0 ]]; then
 
 else
 	echo "App $appName already started."
-	exit 0	
+	exit 2	
 fi
 
 
