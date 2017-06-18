@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-if [ "$#" -ne 4 ]; then
+if [ "$#" -ne 3 ]; then
     echo "Usage: ./addApp.sh username appName port"
     exit
 fi
@@ -10,6 +10,8 @@ user=$1
 appName=$2
 url=$appName.deployhandler.com
 port=$3
+
+if [ ! -d "/home/$user/$appName" ]; then
 
 #Add app directory
 mkdir -m 0754 /home/$user/$appName
@@ -24,11 +26,13 @@ ln -s /etc/nginx/sites-available/$url /etc/nginx/sites-enabled/$url
 nginx -t
 if [ "$?" -eq "0" ]
 then
-    systemctl restart nginx
-else 
-    exit $?
-fi
-          
+	systemctl restart nginx
+else
+    rm -rf /etc/nginx/sites-available/$url /etc/nginx/sites-enabled/$url 
+	exit $?
+fi			
+
+
 #Cloudflare API add DNS domain
 curl -X POST "https://api.cloudflare.com/client/v4/zones/YOUR_ZONE_ID/dns_records" \
      -H "X-Auth-Email: YOUR_EMAIL" \
@@ -40,4 +44,8 @@ then
 	exit $?
 fi
 
+else
+    echo "App already exists!"
+    exit 1
+fi
 exit 0

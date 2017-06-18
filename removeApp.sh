@@ -8,7 +8,7 @@ fi
 #CONFIG
 user=$1
 appName=$2
-url=$2.deployhandler.com
+url=$appName.deployhandler.com
 
 #Remove from pm2
 pm2 delete $appName
@@ -17,7 +17,7 @@ pm2 delete $appName
 rm -rf /home/$user/$appName
 
 #Remove NGINX vhost
-rm /etc/nginx/sites-available/$url /etc/nginx/sites-enabled/$url
+rm -rf /etc/nginx/sites-available/$url /etc/nginx/sites-enabled/$url
 nginx -t
 if [ "$?" -eq "0" ]
 then
