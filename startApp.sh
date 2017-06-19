@@ -27,6 +27,7 @@ if [[ $res -eq 0 ]]; then
 		su - appsrunner -c "pm2 start --name $appName /home/$user/$appName/$entryPoint"
 		if [ "$?" -eq "0" ]; then
 			echo "Started by entry point"
+			su - appsrunner -c "pm2 save"
 			exit 0
 		fi
 	fi
@@ -40,10 +41,12 @@ if [[ $res -eq 0 ]]; then
 		echo "Result after eq 4 command : $check"
 		if [ "$check" -eq "2" ]; then
 			echo "Started by npm"
+			su - appsrunner -c "pm2 save"
 			exit 0
 		else 
 			pm2 delete $appName
 			echo "Error while starting by provided npm command $npm"
+			su - appsrunner -c "pm2 save"
 			exit 1	
 		fi
 	fi
@@ -52,6 +55,7 @@ if [[ $res -eq 0 ]]; then
 	su - appsrunner -c "pm2 start --name $appName /home/$user/$appName/server.js"
 	if [ "$?" -eq "0" ]; then
 		echo "Started by server.js"
+		su - appsrunner -c "pm2 save"
 		exit 0
 	fi
 

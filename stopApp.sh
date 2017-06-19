@@ -14,6 +14,7 @@ if [[ $res =~ $re ]] && [[ $res -ne 0 ]] ; then
 	su - appsrunner -c "pm2 stop $appName"
 	if [ $? -eq 0 ]; then
 		echo "App '$appName' stopped."
+		su - appsrunner -c "pm2 save"
 		exit 0
 	fi	
 fi
