@@ -11,7 +11,7 @@ appName=$2
 url=$appName.deployhandler.com
 
 #Remove from pm2
-pm2 delete $appName
+su - appsrunner -c "pm2 delete $appName"
 
 #Delete app files
 rm -rf /home/$user/$appName
