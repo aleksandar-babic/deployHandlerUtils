@@ -17,14 +17,14 @@ appName=$2
 entryPoint=$3
 npm=$4
 
-res=$(pm2 list | grep $appName | awk '{print $8}')
+res=$(su - appsrunner -c "pm2 list" | grep $appName | awk '{print $8}')
 echo $res
 re='^[0-9]+$'
 if [[ $res -eq 0 ]]; then
 
 	#Try to start with entry point provided
 	if [ "$#" -eq 3 ]; then
-		pm2 start --name "$appName" /home/$user/$appName/$entryPoint
+		su - appsrunner -c "pm2 start --name $appName /home/$user/$appName/$entryPoint"
 		if [ "$?" -eq "0" ]; then
 			echo "Started by entry point"
 			exit 0
@@ -34,7 +34,7 @@ if [[ $res -eq 0 ]]; then
 	#Try to start using npm command
 	if [ "$#" -eq 4 ]; then
 		cd /home/$user/$appName
-		pm2 start --name "$appName" "/usr/bin/npm" -- $npm
+		su - appsrunner -c "pm2 start --name $appName /usr/bin/npm -- $npm"
 		sleep 10
 		check=$(ps aux | grep -e "$appName" | grep -v grep | awk '{print $2}' | wc -w )
 		echo "Result after eq 4 command : $check"
@@ -49,7 +49,7 @@ if [[ $res -eq 0 ]]; then
 	fi
 
 	#Try to start with server.js
-	pm2 start --name "$appName" /home/$user/$appName/server.js
+	su - appsrunner -c "pm2 start --name $appName /home/$user/$appName/server.js"
 	if [ "$?" -eq "0" ]; then
 		echo "Started by server.js"
 		exit 0

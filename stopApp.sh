@@ -8,10 +8,10 @@ fi
 #CONFIG
 appName=$1
 
-res=$(pm2 list | grep $appName | awk '{print $8}')
+res=$(su - appsrunner -c "pm2 list" | grep $appName | awk '{print $8}')
 re='^[0-9]+$'
 if [[ $res =~ $re ]] && [[ $res -ne 0 ]] ; then
-	pm2 stop $appName
+	su - appsrunner -c "pm2 stop $appName"
 	if [ $? -eq 0 ]; then
 		echo "App '$appName' stopped."
 		exit 0
