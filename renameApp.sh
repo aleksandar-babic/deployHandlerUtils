@@ -1,18 +1,21 @@
 ﻿#!/usr/bin/env bash
 
-if [ "$#" -ne 2 ]; then
-    echo "Usage: ./renameApp.sh oldName newName"
+if [ "$#" -ne 3 ]; then
+    echo "Usage: ./renameApp.sh oldName newName username"
     exit
 fi
 
 #CONFIG
 oldName=$1
 newName=$2
+username=$3
 oldUrl=$oldName.deployhandler.com
 newUrl=$newName.deployhandler.com
 
 echo $oldUrl
 echo $newUrl
+
+mv /home/$username/$oldName /home/$username/$newName
 
 mv /etc/nginx/sites-available/$oldUrl /etc/nginx/sites-available/$newUrl
 rm -rf /etc/nginx/sites-enabled/$oldUrl
@@ -21,11 +24,11 @@ ln -s /etc/nginx/sites-available/$newUrl /etc/nginx/sites-enabled/$newUrl
 nginx -t
 if [ "$?" -eq "0" ]
 then
-    systemctl restart nginx
+	systemctl restart nginx
 else
     #Do some housekeeping?
-    exit $?
-fi          
+	exit $?
+fi		
 
 
 #Cloudflare API add DNS domain
