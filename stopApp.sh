@@ -11,7 +11,7 @@ appName=$1
 res=$(su - appsrunner -c "pm2 list" | grep $appName | awk '{print $8}')
 re='^[0-9]+$'
 if [[ $res =~ $re ]] && [[ $res -ne 0 ]] ; then
-	su - appsrunner -c "pm2 stop $appName"
+	su - appsrunner -c "pm2 delete $appName"
 	if [ $? -eq 0 ]; then
 		echo "App '$appName' stopped."
 		su - appsrunner -c "pm2 save"

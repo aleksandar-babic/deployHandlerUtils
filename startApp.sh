@@ -26,9 +26,17 @@ if [[ $res -eq 0 ]]; then
 	if [ "$#" -eq 3 ]; then
 		su - appsrunner -c "pm2 start --name $appName /home/$user/$appName/$entryPoint"
 		if [ "$?" -eq "0" ]; then
-			echo "Started by entry point"
-			su - appsrunner -c "pm2 save"
-			exit 0
+			res=$(su - appsrunner -c "pm2 list" | grep $appName | awk '{print $8}')
+			echo $res
+			if [[ $res -eq 0 ]]; then
+				echo "START FAILED"
+				su - appsrunner -c "pm2 delete $appName"
+				exit 1
+			else
+				echo "Started by entry point"
+				su - appsrunner -c "pm2 save"
+				exit 0
+			fi		
 		fi
 	fi
 
@@ -44,7 +52,7 @@ if [[ $res -eq 0 ]]; then
 			su - appsrunner -c "pm2 save"
 			exit 0
 		else 
-			pm2 delete $appName
+			su - appsrunner -c "pm2 delete $appName"
 			echo "Error while starting by provided npm command $npm"
 			su - appsrunner -c "pm2 save"
 			exit 1	
@@ -61,13 +69,10 @@ if [[ $res -eq 0 ]]; then
 
 	#If everything above failed
 	echo "START FAILED"
+	su - appsrunner -c "pm2 delete $appName"
 	exit 1
 
 else
 	echo "App $appName already started."
 	exit 2	
 fi
-
-
-
-
