@@ -17,6 +17,8 @@ echo $newUrl
 
 mv /home/$username/$oldName /home/$username/$newName
 
+su - appsrunner -c "pm2 delete $oldName"
+
 mv /etc/nginx/sites-available/$oldUrl /etc/nginx/sites-available/$newUrl
 rm -rf /etc/nginx/sites-enabled/$oldUrl
 ln -s /etc/nginx/sites-available/$newUrl /etc/nginx/sites-enabled/$newUrl
