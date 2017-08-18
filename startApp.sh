@@ -44,18 +44,18 @@ if [[ $res -eq 0 ]]; then
 	if [ "$#" -eq 4 ]; then
 		cd /home/$user/$appName
 		su - appsrunner -c "pm2 start --name $appName /usr/bin/npm -- $npm"
-		sleep 10
-		check=$(ps aux | grep -e "$appName" | grep -v grep | awk '{print $2}' | wc -w )
-		echo "Result after eq 4 command : $check"
-		if [ "$check" -eq "2" ]; then
-			echo "Started by npm"
-			su - appsrunner -c "pm2 save"
-			exit 0
-		else 
-			su - appsrunner -c "pm2 delete $appName"
-			echo "Error while starting by provided npm command $npm"
-			su - appsrunner -c "pm2 save"
-			exit 1	
+		if [ "$?" -eq "0" ]; then
+			res=$(su - appsrunner -c "pm2 list" | grep $appName | awk '{print $8}')
+			echo $res
+			if [[ $res -eq 0 ]]; then
+				echo "START FAILED"
+				su - appsrunner -c "pm2 delete $appName"
+				exit 1
+			else
+				echo "Started by entry point"
+				su - appsrunner -c "pm2 save"
+				exit 0
+			fi		
 		fi
 	fi
 
