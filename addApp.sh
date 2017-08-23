@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
 
-# The MIT License (MIT)
+# MIT License
 
-# Copyright (c) 2013 Thomas Park
+# Copyright (c) 2017 Aleksandar Babic
 
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
@@ -11,16 +11,16 @@
 # copies of the Software, and to permit persons to whom the Software is
 # furnished to do so, subject to the following conditions:
 
-# The above copyright notice and this permission notice shall be included in
-# all copies or substantial portions of the Software.
+# The above copyright notice and this permission notice shall be included in all
+# copies or substantial portions of the Software.
 
 # THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 # IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
 # FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
 # AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 # LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-# OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
-# THE SOFTWARE.
+# OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+# SOFTWARE.
 
 # Aleksandar Babic - https://aleksandar.alfa-ing.com
 
@@ -67,11 +67,7 @@ fi
 
 
 #Cloudflare API add DNS domain
-curl -X POST "https://api.cloudflare.com/client/v4/zones/YOURZONE/dns_records" \
-     -H "X-Auth-Email: YOUREMAIL" \
-     -H "X-Auth-Key: YOURKEY" \
-     -H "Content-Type: application/json" \
-     --data '{"type":"A","name":"'$url'","content":"SERVERIP","ttl":120,"proxied":false}'
+curl -X POST "https://api.cloudflare.com/client/v4/zones/YOURZONE/dns_records"-H "X-Auth-Email: YOUREMAIL"-H "X-Auth-Key: YOURKEY"-H "Content-Type: application/json" --data '{"type":"A","name":"'$url'","content":"SERVERIP","ttl":120,"proxied":false}'
 if [ "$?" -eq "0" ]
 then
 	exit $?
